@@ -1,0 +1,22 @@
+# Production collector. Restarts on ANY exit (watchdog exits non-zero on a stale stream / low disk).
+# Install: see ops/install.sh. Edit User/WorkingDirectory to match the VM.
+[Unit]
+Description=mdcap market-data collector (raw capture)
+After=network-online.target chrony.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/opt/md-capture
+ExecStartPre=/opt/md-capture/.venv/bin/python -m mdcap validate
+ExecStart=/opt/md-capture/.venv/bin/python -m mdcap run --mode prod
+Restart=always
+RestartSec=5
+# Don't let other jobs on this box starve the event loop (receive timestamps depend on it)
+Nice=-5
+CPUWeight=1000
+IOWeight=1000
+
+[Install]
+WantedBy=multi-user.target

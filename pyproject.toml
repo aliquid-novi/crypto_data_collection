@@ -1,0 +1,21 @@
+[project]
+name = "md-capture"
+version = "0.1.0"
+description = "Raw-first crypto market-data capture for market-making research, on cryptofeed"
+requires-python = ">=3.11"
+dependencies = [
+  "cryptofeed==3.0.1",   # venue behaviour verified against this exact version - bump via /change
+  "numpy>=1.26",
+  "pandas>=2.1",
+  "pyarrow>=14",
+  "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools]
+packages = ["mdcap", "mdcap.parsers"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

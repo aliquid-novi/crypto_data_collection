@@ -1,0 +1,20 @@
+# Paths are relative to the repo root unless absolute. On the VM, point these at the data disk.
+paths:
+  raw: data/raw              # L0, source of truth. Never deleted by agents.
+  normalized: data/normalized
+  health: data/health
+  reports: reports
+
+# Raw capture files rotate at this size. Each file is read whole when normalizing,
+# so this also bounds normalizer memory (~10x the compressed size). Keep it modest.
+rotate_size_mb: 128
+
+heartbeat_s: 10
+loop_lag_warn_ms: 50        # p99 event-loop lag above this = receive timestamps unreliable at that scale
+min_free_disk_gb: 5         # collector exits (loudly) below this
+
+delivery:
+  # rclone remote for raw + normalized. A GCS bucket with a service account doesn't expire like
+  # Drive OAuth tokens in "Testing" mode did. Drive still works if you prefer it.
+  remote: "gcs_md:YOUR-BUCKET/md-capture"     # e.g. "gdrive_ral:crypto_market_data_v2"
+  min_age: 15m              # never ship a file that may still be open

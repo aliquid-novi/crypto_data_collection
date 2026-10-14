@@ -1,0 +1,11 @@
+[Unit]
+Description=mdcap deliver raw + normalized to remote storage
+After=mdcap-normalize.service
+
+[Service]
+Type=oneshot
+User=%i
+WorkingDirectory=/opt/md-capture
+Nice=15
+IOSchedulingClass=idle
+ExecStart=/opt/md-capture/ops/deliver.sh

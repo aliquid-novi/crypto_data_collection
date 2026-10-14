@@ -1,0 +1,25 @@
+# What gets collected. One entry per (venue, symbol).
+#
+#   channels   l1 (top of book, unconflated where the venue allows), l2 (depth), trades
+#   purpose    the research question this data serves, in Mark's words. Required.
+#   status     probe -> active -> retired.  active requires probe_report with Verdict: PASS
+#              (or WARN plus accepted_warnings: <Mark's reason>).
+#
+# Edit via /add-market (it runs the probe and writes the report). `python -m mdcap validate` checks this file.
+
+markets:
+  - venue: HYPERLIQUID
+    symbol: HYPE-USD-PERP
+    channels: [l1, l2, trades]
+    purpose: "Jobbing / fair-value research on HYPE: HL vs Binance quotes, fills and lead-lag (follow-up to the Oct 2026 FFT/microprice notebook)"
+    requested_by: mark
+    added: "2026-10-14"
+    status: probe
+
+  - venue: BINANCE_FUTURES
+    symbol: HYPE-USDT-PERP
+    channels: [l1, l2, trades]
+    purpose: "Jobbing / fair-value research on HYPE: Binance leg of the HL vs Binance comparison"
+    requested_by: mark
+    added: "2026-10-14"
+    status: probe

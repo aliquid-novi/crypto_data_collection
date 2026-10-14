@@ -1,0 +1,12 @@
+[Unit]
+Description=mdcap daily health audit (writes reports/health/*.md)
+
+[Service]
+Type=oneshot
+User=%i
+WorkingDirectory=/opt/md-capture
+Nice=15
+IOSchedulingClass=idle
+# exit 1 = WARN, 2 = FAIL: both leave a report; neither should mark the unit failed silently
+SuccessExitStatus=1
+ExecStart=/opt/md-capture/.venv/bin/python -m mdcap audit --hours 24

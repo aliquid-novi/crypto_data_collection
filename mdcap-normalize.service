@@ -1,0 +1,12 @@
+[Unit]
+Description=mdcap normalize closed raw captures
+
+[Service]
+Type=oneshot
+User=%i
+WorkingDirectory=/opt/md-capture
+# Low priority: must never compete with the collector for CPU or disk
+Nice=15
+IOSchedulingClass=idle
+MemoryMax=4G
+ExecStart=/opt/md-capture/.venv/bin/python -m mdcap normalize

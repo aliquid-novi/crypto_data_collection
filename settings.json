@@ -1,0 +1,49 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m mdcap validate)",
+      "Bash(python -m mdcap inventory)",
+      "Bash(python -m mdcap freshness)",
+      "Bash(python -m mdcap audit:*)",
+      "Bash(python -m mdcap normalize:*)",
+      "Bash(python -m mdcap synth:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(python3 -m mdcap validate)",
+      "Bash(python3 -m mdcap inventory)",
+      "Bash(python3 -m mdcap freshness)",
+      "Bash(python3 -m mdcap audit:*)",
+      "Bash(python3 -m mdcap normalize:*)",
+      "Bash(python3 -m mdcap synth:*)",
+      "Bash(python3 -m pytest:*)",
+      "Bash(python .claude/hooks/rawness_scan.py:*)",
+      "Bash(python3 .claude/hooks/rawness_scan.py:*)",
+      "Bash(chronyc tracking)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/rclone.conf)",
+      "Edit(data/raw/**)",
+      "Write(data/raw/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.py\"" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/rawness_scan.py\"" },
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/validate_config.py\"" }
+        ]
+      }
+    ]
+  }
+}

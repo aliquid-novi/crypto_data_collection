@@ -1,0 +1,20 @@
+# data never goes to git (raw is shipped to the remote by ops/deliver.sh)
+data/
+*.pcap
+*.pcap.zst
+*.parquet
+# credentials
+.env
+.env.*
+*.json.key
+rclone.conf
+.claude/settings.local.json
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/
+
+# cryptofeed writes this in the working dir
+*.log
